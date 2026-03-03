@@ -3,6 +3,7 @@ import { localize } from '../util.js';
 import Spinner from '../components/Spinner.js';
 
 export default {
+    name: "LeaderboardPage",
     components: { Spinner },
     data: () => ({
         leaderboard: [],
@@ -12,14 +13,14 @@ export default {
         searchQuery: '',
     }),
     template: `
-        <main v-if="loading">
+        <main v-if="loading" class="page-leaderboard-container">
             <Spinner></Spinner>
         </main>
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
-                <div class="error-container">
-                    <p class="error" v-if="err.length > 0">
-                        Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
+                <div class="error-container" v-if="err.length">
+                    <p class="error">
+                        Leaderboard may be incorrect, levels not loaded: {{ err.join(', ') }}
                     </p>
                 </div>
 
@@ -36,18 +37,14 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(ientry, i) in leaderboard" 
-                                :key="i" 
-                                v-if="ientry.visible !== false">
-                                <td class="rank"><p class="type-label-lg">#{{ i + 1 }}</p></td>
-                                <td class="total"><p class="type-label-lg">{{ localize(ientry.total) }}</p></td>
-                                <td class="user" :class="{ 'active': selected == i }">
-                                    <button @click="selected = i">
-                                        <span class="type-label-lg">{{ ientry.user }}</span>
-                                    </button>
+                            <tr v-for="(ientry, i) in leaderboard" :key="i" v-if="ientry.visible">
+                                <td class="rank"><p>#{{ i + 1 }}</p></td>
+                                <td class="total">{{ localize(ientry.total) }}</td>
+                                <td class="user" :class="{ 'active': selected === i }">
+                                    <button @click="selected = i">{{ ientry.user }}</button>
                                 </td>
-                                <td class="flag"><span class="type-label-lg">{{ ientry.flag }}</span></td>
-                                <td class="clan"><span class="type-label-lg">{{ ientry.clan }}</span></td>
+                                <td class="flag">{{ ientry.flag }}</td>
+                                <td class="clan">{{ ientry.clan }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -66,65 +63,65 @@ export default {
                             />
                         </div>
 
-                        <h1 v-if="entry.user">#{{ selected + 1 }} {{ entry.user }}</h1>
-                        <h3 v-if="entry.total !== undefined">{{ entry.total }}</h3>
+                        <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
+                        <h3>{{ entry.total }}</h3>
 
-                        <h2 v-if="entry.verified && entry.verified.length > 0">
-                            Verified ({{ entry.verified.length }})
-                        </h2>
-                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
+                        <h2 v-if="entry.verified.length">Verified ({{ entry.verified.length }})</h2>
+                        <table class="table">
                             <tr v-for="score in entry.verified" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                                <td class="rank">#{{ score.rank }}</td>
                                 <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                    <a :href="score.link" target="_blank">{{ score.level }}</a>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="score">+{{ localize(score.score) }}</td>
                             </tr>
                         </table>
 
-                        <h2 v-if="entry.completed && entry.completed.length > 0">
-                            Completed ({{ entry.completed.length }})
-                        </h2>
-                        <table class="table" v-if="entry.completed && entry.completed.length > 0">
+                        <h2 v-if="entry.completed.length">Completed ({{ entry.completed.length }})</h2>
+                        <table class="table">
                             <tr v-for="score in entry.completed" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                                <td class="rank">#{{ score.rank }}</td>
                                 <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                    <a :href="score.link" target="_blank">{{ score.level }}</a>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="score">+{{ localize(score.score) }}</td>
                             </tr>
                         </table>
 
-                        <h2 v-if="entry.progressed && entry.progressed.length > 0">
-                            Progressed ({{ entry.progressed.length }})
-                        </h2>
-                        <table class="table" v-if="entry.progressed && entry.progressed.length > 0">
+                        <h2 v-if="entry.progressed.length">Progressed ({{ entry.progressed.length }})</h2>
+                        <table class="table">
                             <tr v-for="score in entry.progressed" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
+                                <td class="rank">#{{ score.rank }}</td>
                                 <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.percent }}% {{ score.level }}</a>
+                                    <a :href="score.link" target="_blank">{{ score.percent }}% {{ score.level }}</a>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="score">+{{ localize(score.score) }}</td>
                             </tr>
                         </table>
                     </div>
                 </div>
-
             </div>
         </main>
     `,
     computed: {
         entry() {
-            return this.leaderboard[this.selected] || { verified: [], completed: [], progressed: [] };
-        },
+            return this.leaderboard[this.selected] || { verified: [], completed: [], progressed: [], user: '', total: 0 };
+        }
+    },
+    methods: {
+        localize,
+        filterPlayers() {
+            const q = this.searchQuery.toLowerCase().trim();
+            this.leaderboard.forEach(player => {
+                player.visible = !q || player.user.toLowerCase().includes(q);
+            });
+        }
     },
     async mounted() {
         try {
             const result = await fetchLeaderboard();
-
-            // Güvenlik: Boş veya hatalı veri varsa fallback
-            const leaderboardData = Array.isArray(result) && result.length > 0 ? result[0] : [];
-            const errData = Array.isArray(result) && result.length > 1 ? result[1] : [];
+            const leaderboardData = Array.isArray(result) && result.length ? result[0] : [];
+            const errData = Array.isArray(result) && result.length ? result[1] : [];
 
             // Flag & Clan ekle
             leaderboardData.forEach(player => {
@@ -139,23 +136,12 @@ export default {
 
             this.leaderboard = leaderboardData;
             this.err = errData;
-
         } catch (e) {
             console.error("fetchLeaderboard error:", e);
             this.leaderboard = [];
             this.err = ["Failed to fetch leaderboard"];
         } finally {
-            // Spinner kesinlikle kapanacak
             this.loading = false;
         }
-    },
-    methods: {
-        localize,
-        filterPlayers() {
-            const q = this.searchQuery.toLowerCase().trim();
-            this.leaderboard.forEach(player => {
-                player.visible = !q || player.user.toLowerCase().includes(q);
-            });
-        }
-    },
+    }
 };
