@@ -123,6 +123,29 @@ export default {
         const [leaderboard, err] = await fetchLeaderboard();
         this.leaderboard = leaderboard;
         this.err = err;
+
+        // Flag ve Clan ekleme
+        this.leaderboard.forEach(player => {
+            switch(player.user) {
+                case "Exen":
+                    player.flag = "🇺🇸";
+                    player.clan = "DarkGuild";
+                    break;
+                case "Zeronium":
+                    player.flag = "🇫🇷";
+                    player.clan = "LightClan";
+                    break;
+                case "ZmL":
+                    player.flag = "🇩🇪";
+                    player.clan = "NightCrew";
+                    break;
+                // İstediğin kadar kullanıcı ekleyebilirsin
+                default:
+                    player.flag = "🏳️"; // boş / bilinmeyen
+                    player.clan = "NoClan";
+            }
+        });
+
         // Hide loading spinner
         this.loading = false;
     },
