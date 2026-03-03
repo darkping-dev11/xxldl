@@ -22,8 +22,11 @@ export default {
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
 
+                <!-- Hata mesajı -->
                 <div class="error-container" v-if="err.length">
-                    <p class="error">Leaderboard may be incorrect, levels not loaded: {{ err.join(', ') }}</p>
+                    <p class="error">
+                        Leaderboard may be incorrect, levels not loaded: {{ err.join(', ') }}
+                    </p>
                 </div>
 
                 <!-- Board -->
@@ -56,7 +59,7 @@ export default {
                 <div class="player-container">
                     <div class="player">
 
-                        <!-- Search -->
+                        <!-- Player Search -->
                         <div class="player-search">
                             <input type="text" placeholder="Search Player..." v-model="searchQuery" @input="filterPlayers" />
                         </div>
@@ -115,7 +118,7 @@ export default {
             this.leaderboard.forEach(player => {
                 player.visible = !q || player.user.toLowerCase().includes(q);
             });
-            // Eğer aranan player varsa onu seç
+            // Eğer aranan oyuncu varsa onu seç
             const firstMatch = this.leaderboard.findIndex(p => p.visible);
             if(firstMatch !== -1) this.selected = firstMatch;
         }
@@ -144,7 +147,7 @@ export default {
             this.leaderboard = [];
             this.err = ["Failed to fetch leaderboard"];
         } finally {
-            this.loading = false; // Spinner artık kapanacak
+            this.loading = false; // Spinner kapanır
         }
     }
 };
