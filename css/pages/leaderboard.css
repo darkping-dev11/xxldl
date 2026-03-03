@@ -91,3 +91,31 @@
 .page-leaderboard .player .table a:hover {
     text-decoration: underline;
 }
+/* Flag ve Clan sütunları */
+.page-leaderboard .board th.flag,
+.page-leaderboard .board th.clan {
+    text-align: left;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+.page-leaderboard .board td.flag,
+.page-leaderboard .board td.clan {
+    text-align: left;
+    padding: 1rem;
+    font-style: normal;
+    color: var(--color-on-background-hover);
+}
+
+/* Eğer flag emoji veya resim kullanacaksan */
+.page-leaderboard .board td.flag img,
+.page-leaderboard .board td.flag span {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
+/* Responsive ve yatay scroll desteği */
+.page-leaderboard .board {
+    overflow-x: auto;
+}
