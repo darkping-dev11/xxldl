@@ -1,6 +1,5 @@
 import { fetchLeaderboard } from '../content.js';
 import { localize } from '../util.js';
-
 import Spinner from '../components/Spinner.js';
 
 export default {
@@ -11,7 +10,6 @@ export default {
         selected: 0,
         err: [],
         searchQuery: '',
-        currentType: 'global', // global veya country
     }),
     template: `
         <main v-if="loading">
@@ -19,18 +17,10 @@ export default {
         </main>
         <main v-else class="page-leaderboard-container">
             <div class="page-leaderboard">
-                
-                <!-- Error -->
                 <div class="error-container">
                     <p class="error" v-if="err.length > 0">
                         Leaderboard may be incorrect, as the following levels could not be loaded: {{ err.join(', ') }}
                     </p>
-                </div>
-
-                <!-- Board Type Selector -->
-                <div class="board-type-selector" style="margin-bottom:1rem;">
-                    <button @click="switchType('global')" :class="{active: currentType==='global'}">Global</button>
-                    <button @click="switchType('country')" :class="{active: currentType==='country'}">Country</button>
                 </div>
 
                 <!-- Board -->
@@ -46,7 +36,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(ientry, i) in filteredLeaderboard" 
+                            <tr v-for="(ientry, i) in leaderboard" 
                                 :key="i" 
                                 v-if="ientry.visible !== false">
                                 <td class="rank"><p class="type-label-lg">#{{ i + 1 }}</p></td>
@@ -76,32 +66,44 @@ export default {
                             />
                         </div>
 
-                        <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
-                        <h3>{{ entry.total }}</h3>
+                        <h1 v-if="entry.user">#{{ selected + 1 }} {{ entry.user }}</h1>
+                        <h3 v-if="entry.total !== undefined">{{ entry.total }}</h3>
 
-                        <h2 v-if="entry.verified.length > 0">Verified ({{ entry.verified.length }})</h2>
-                        <table class="table">
+                        <h2 v-if="entry.verified && entry.verified.length > 0">
+                            Verified ({{ entry.verified.length }})
+                        </h2>
+                        <table class="table" v-if="entry.verified && entry.verified.length > 0">
                             <tr v-for="score in entry.verified" :key="score.level">
                                 <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level"><a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a></td>
+                                <td class="level">
+                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                </td>
                                 <td class="score"><p>+{{ localize(score.score) }}</p></td>
                             </tr>
                         </table>
 
-                        <h2 v-if="entry.completed.length > 0">Completed ({{ entry.completed.length }})</h2>
-                        <table class="table">
+                        <h2 v-if="entry.completed && entry.completed.length > 0">
+                            Completed ({{ entry.completed.length }})
+                        </h2>
+                        <table class="table" v-if="entry.completed && entry.completed.length > 0">
                             <tr v-for="score in entry.completed" :key="score.level">
                                 <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level"><a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a></td>
+                                <td class="level">
+                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                </td>
                                 <td class="score"><p>+{{ localize(score.score) }}</p></td>
                             </tr>
                         </table>
 
-                        <h2 v-if="entry.progressed.length > 0">Progressed ({{ entry.progressed.length }})</h2>
-                        <table class="table">
+                        <h2 v-if="entry.progressed && entry.progressed.length > 0">
+                            Progressed ({{ entry.progressed.length }})
+                        </h2>
+                        <table class="table" v-if="entry.progressed && entry.progressed.length > 0">
                             <tr v-for="score in entry.progressed" :key="score.level">
                                 <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level"><a class="type-label-lg" :href="score.link" target="_blank">{{ score.percent }}% {{ score.level }}</a></td>
+                                <td class="level">
+                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.percent }}% {{ score.level }}</a>
+                                </td>
                                 <td class="score"><p>+{{ localize(score.score) }}</p></td>
                             </tr>
                         </table>
@@ -113,24 +115,18 @@ export default {
     `,
     computed: {
         entry() {
-            return this.filteredLeaderboard[this.selected] || { verified: [], completed: [], progressed: [] };
-        },
-        filteredLeaderboard() {
-            const q = this.searchQuery.toLowerCase().trim();
-            return this.leaderboard
-                .filter(player => (player.visible !== false) && (!q || player.user.toLowerCase().includes(q)))
-                .filter(player => {
-                    if (this.currentType === 'country') return player.country; // country lb filtreleme
-                    return true;
-                });
+            return this.leaderboard[this.selected] || { verified: [], completed: [], progressed: [] };
         },
     },
     async mounted() {
         try {
             const result = await fetchLeaderboard();
-            const leaderboardData = Array.isArray(result) && result.length ? result[0] : [];
-            const errData = Array.isArray(result) && result.length ? result[1] : [];
 
+            // Güvenlik: Boş veya hatalı veri varsa fallback
+            const leaderboardData = Array.isArray(result) && result.length > 0 ? result[0] : [];
+            const errData = Array.isArray(result) && result.length > 1 ? result[1] : [];
+
+            // Flag & Clan ekle
             leaderboardData.forEach(player => {
                 switch(player.user) {
                     case "Exen": player.flag="🇺🇸"; player.clan="DarkGuild"; break;
@@ -149,21 +145,17 @@ export default {
             this.leaderboard = [];
             this.err = ["Failed to fetch leaderboard"];
         } finally {
+            // Spinner kesinlikle kapanacak
             this.loading = false;
         }
     },
     methods: {
         localize,
         filterPlayers() {
-            // reactive search
             const q = this.searchQuery.toLowerCase().trim();
             this.leaderboard.forEach(player => {
                 player.visible = !q || player.user.toLowerCase().includes(q);
             });
-        },
-        switchType(type) {
-            this.currentType = type;
-            this.selected = 0;
         }
     },
 };
