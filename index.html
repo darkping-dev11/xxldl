@@ -46,9 +46,7 @@
             div {
                 background-color: transparent !important;
             }
-        </style>
 
-        <style>
             /* Header altındaki bölümlere çizgi ekleme */
             header .logo {
                 border-bottom: 2px solid rgba(255,255,255,0.3);
@@ -67,9 +65,51 @@
             }
 
             .nav__cta:hover {
-                border-bottom: 2px solid #fff; /* Beyaz çizgi hover’da görünür */
+                border-bottom: 2px solid #fff;
             }
-        </style>  
+
+            /* Dropdown menü */
+            .nav-dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                right: 0;
+                background-color: rgba(0,0,0,0.9);
+                min-width: 140px;
+                border-radius: 0.5rem;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                z-index: 100;
+            }
+
+            .dropdown-content a {
+                display: block;
+                padding: 0.5rem 1rem;
+                color: #fff;
+                text-decoration: none;
+                font-size: 0.9rem;
+            }
+
+            .dropdown-content a:hover {
+                background-color: rgba(255,255,255,0.1);
+            }
+
+            .nav-dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            .dropdown-btn {
+                background: transparent;
+                border: none;
+                font-size: 1.5rem;
+                cursor: pointer;
+                color: #fff;
+            }
+        </style>
 
         <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
@@ -92,12 +132,18 @@
                 <router-link class="nav__tab" to="/roulette">
                     <span class="type-label-lg">Roulette</span>
                 </router-link>
-                <div class="nav__actions">
-                    <!-- Ay (Dark/Light) butonu kaldırıldı -->
 
-                    <a class="nav__icon" href="#">
-                        <img src="/assets/discord.svg" alt="Discord Logo" />
-                    </a>
+                <div class="nav__actions">
+                    <!-- İnternet dropdown menü -->
+                    <div class="nav-dropdown">
+                        <button class="nav__icon dropdown-btn">🌐</button>
+                        <div class="dropdown-content">
+                            <a href="https://discord.com" target="_blank">Discord</a>
+                            <a href="https://youtube.com" target="_blank">YouTube</a>
+                            <a href="https://twitter.com" target="_blank">Twitter</a>
+                        </div>
+                    </div>
+
                     <a
                         class="nav__cta type-label-lg"
                         href="#"
