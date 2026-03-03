@@ -127,7 +127,7 @@ export default {
         // Flag ve Clan ekleme
         this.leaderboard.forEach(player => {
             switch(player.user) {
-                case "Exen":
+                case "Sample_Victor_1":
                     player.flag = "🇺🇸";
                     player.clan = "DarkGuild";
                     break;
