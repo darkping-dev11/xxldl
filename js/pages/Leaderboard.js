@@ -131,49 +131,55 @@ export default {
     `,
     computed: {
         entry() {
-            return this.leaderboard[this.selected];
+            return this.leaderboard[this.selected] || { verified: [], completed: [], progressed: [] };
         },
     },
     async mounted() {
-    try {
-        const result = await fetchLeaderboard();
-        // Güvenli kontrol: fetch null/undefined dönüyorsa boş array yap
-        const leaderboard = (result && result[0]) ? result[0] : [];
-        const err = (result && result[1]) ? result[1] : [];
+        try {
+            // fetchLeaderboard() zaten [leaderboard, err] döndürüyor
+            const [leaderboardData, errData] = await fetchLeaderboard();
 
-        // Flag ve Clan ekleme
-        leaderboard.forEach(player => {
-            switch(player.user) {
-                case "Exen":
-                    player.flag = "🇺🇸";
-                    player.clan = "DarkGuild";
-                    break;
-                case "Zeronium":
-                    player.flag = "🇫🇷";
-                    player.clan = "LightClan";
-                    break;
-                case "ZmL":
-                    player.flag = "🇩🇪";
-                    player.clan = "NightCrew";
-                    break;
-                default:
-                    player.flag = "🏳️";
-                    player.clan = "NoClan";
-            }
-            // Tüm oyuncular başta görünür
-            player.visible = true;
-        });
+            // Flag ve Clan ekleme
+            leaderboardData.forEach(player => {
+                switch(player.user) {
+                    case "Exen":
+                        player.flag = "🇺🇸";
+                        player.clan = "DarkGuild";
+                        break;
+                    case "Zeronium":
+                        player.flag = "🇫🇷";
+                        player.clan = "LightClan";
+                        break;
+                    case "ZmL":
+                        player.flag = "🇩🇪";
+                        player.clan = "NightCrew";
+                        break;
+                    default:
+                        player.flag = "🏳️";
+                        player.clan = "NoClan";
+                }
+                // Tüm oyuncular başta görünür
+                player.visible = true;
+            });
 
-        // Reaktif olarak Vue'ya ata
-        this.leaderboard = leaderboard;
-        this.err = err;
+            this.leaderboard = leaderboardData || [];
+            this.err = errData || [];
 
-    } catch (e) {
-        console.error("Error fetching leaderboard:", e);
-        this.leaderboard = [];
-        this.err = ["Failed to fetch leaderboard"];
-    } finally {
-        // Spinner'ı gizle
-        this.loading = false;
-    }
-}
+        } catch (e) {
+            console.error("Error fetching leaderboard:", e);
+            this.leaderboard = [];
+            this.err = ["Failed to fetch leaderboard"];
+        } finally {
+            this.loading = false; // Spinner kapanır
+        }
+    },
+    methods: {
+        localize,
+        filterPlayers() {
+            const query = this.searchQuery.toLowerCase().trim();
+            this.leaderboard.forEach(player => {
+                player.visible = !query || player.user.toLowerCase().includes(query);
+            });
+        }
+    },
+};
