@@ -24,26 +24,25 @@
         <link rel="stylesheet" type="text/css" href="/css/components/tabs.css" />
 
         <!-- 🔥 RENKLİ ARKA PLAN -->
-        <style>
-            body {
-                background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf);
-                background-size: 400% 400%;
-                animation: gradientMove 15s ease infinite;
-                min-height: 100vh;
-            }
+        <<style>
+    html, body, #app {
+        background: linear-gradient(135deg, #ff0080, #7928ca, #2afadf) !important;
+        background-size: 400% 400% !important;
+        animation: gradientMove 15s ease infinite !important;
+        min-height: 100vh !important;
+    }
 
-            @keyframes gradientMove {
-                0% { background-position: 0% 50%; }
-                50% { background-position: 100% 50%; }
-                100% { background-position: 0% 50%; }
-            }
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-            /* Cam efekti header */
-            header {
-                backdrop-filter: blur(10px);
-                background: rgba(0, 0, 0, 0.4);
-            }
-        </style>
+    /* Eğer başka bir katman beyaz arka plan veriyorsa bunu da sıfırlayalım: */
+    .page-container, .view-container {
+        background: transparent !important;
+    }
+</style>
 
         <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
         <script src="https://unpkg.com/vue-router@4.0.14/dist/vue-router.global.prod.js"></script>
