@@ -4,7 +4,9 @@ import { localize } from '../util.js';
 import Spinner from '../components/Spinner.js';
 
 export default {
-    components: { Spinner },
+    components: {
+        Spinner,
+    },
     data: () => ({
         leaderboard: [],
         loading: true,
@@ -23,7 +25,7 @@ export default {
                     </p>
                 </div>
 
-                <!-- Board -->
+                <!-- Board table -->
                 <div class="board-container">
                     <table class="board">
                         <thead>
@@ -36,59 +38,74 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(ientry, i) in leaderboard" 
-                                :key="i"
-                                v-if="ientry.visible !== false">
-                                <td class="rank"><p class="type-label-lg">#{{ i + 1 }}</p></td>
-                                <td class="total"><p class="type-label-lg">{{ localize(ientry.total) }}</p></td>
+                            <tr v-for="(ientry, i) in leaderboard" :key="i">
+                                <td class="rank">
+                                    <p class="type-label-lg">#{{ i + 1 }}</p>
+                                </td>
+                                <td class="total">
+                                    <p class="type-label-lg">{{ localize(ientry.total) }}</p>
+                                </td>
                                 <td class="user" :class="{ 'active': selected == i }">
                                     <button @click="selected = i">
                                         <span class="type-label-lg">{{ ientry.user }}</span>
                                     </button>
                                 </td>
-                                <td class="flag"><span class="type-label-lg">{{ ientry.flag }}</span></td>
-                                <td class="clan"><span class="type-label-lg">{{ ientry.clan }}</span></td>
+                                <td class="flag">
+                                    <span class="type-label-lg">{{ ientry.flag }}</span>
+                                </td>
+                                <td class="clan">
+                                    <span class="type-label-lg">{{ ientry.clan }}</span>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Player Details -->
+                <!-- Player details -->
                 <div class="player-container">
                     <div class="player">
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
                         <h3>{{ entry.total }}</h3>
-
                         <h2 v-if="entry.verified.length > 0">Verified ({{ entry.verified.length }})</h2>
                         <table class="table">
                             <tr v-for="score in entry.verified" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
                             </tr>
                         </table>
-
                         <h2 v-if="entry.completed.length > 0">Completed ({{ entry.completed.length }})</h2>
                         <table class="table">
                             <tr v-for="score in entry.completed" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.level }}</a>
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
                             </tr>
                         </table>
-
                         <h2 v-if="entry.progressed.length > 0">Progressed ({{ entry.progressed.length }})</h2>
                         <table class="table">
                             <tr v-for="score in entry.progressed" :key="score.level">
-                                <td class="rank"><p>#{{ score.rank }}</p></td>
-                                <td class="level">
-                                    <a class="type-label-lg" :href="score.link" target="_blank">{{ score.percent }}% {{ score.level }}</a>
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
                                 </td>
-                                <td class="score"><p>+{{ localize(score.score) }}</p></td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.percent }}% {{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>+{{ localize(score.score) }}</p>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -99,36 +116,40 @@ export default {
     `,
     computed: {
         entry() {
-            return this.leaderboard[this.selected] || { verified: [], completed: [], progressed: [] };
+            return this.leaderboard[this.selected];
         },
     },
     async mounted() {
-        try {
-            const result = await fetchLeaderboard();
-            const leaderboardData = Array.isArray(result) && result.length ? result[0] : [];
-            const errData = Array.isArray(result) && result.length ? result[1] : [];
+        const [leaderboard, err] = await fetchLeaderboard();
+        this.leaderboard = leaderboard;
+        this.err = err;
 
-            // Flag ve Clan ekleme
-            leaderboardData.forEach(player => {
-                switch(player.user) {
-                    case "Exen": player.flag="🇺🇸"; player.clan="DarkGuild"; break;
-                    case "Zeronium": player.flag="🇫🇷"; player.clan="LightClan"; break;
-                    case "ZmL": player.flag="🇩🇪"; player.clan="NightCrew"; break;
-                    default: player.flag="🏳️"; player.clan="NoClan";
-                }
-                player.visible = true;
-            });
+        // Flag ve Clan ekleme
+        this.leaderboard.forEach(player => {
+            switch(player.user) {
+                case "Exen":
+                    player.flag = "🇺🇸";
+                    player.clan = "DarkGuild";
+                    break;
+                case "Zeronium":
+                    player.flag = "🇫🇷";
+                    player.clan = "LightClan";
+                    break;
+                case "ZmL":
+                    player.flag = "🇩🇪";
+                    player.clan = "NightCrew";
+                    break;
+                // İstediğin kadar kullanıcı ekleyebilirsin
+                default:
+                    player.flag = "🏳️"; // boş / bilinmeyen
+                    player.clan = "NoClan";
+            }
+        });
 
-            this.leaderboard = leaderboardData;
-            this.err = errData;
-
-        } catch (e) {
-            console.error("fetchLeaderboard error:", e);
-            this.leaderboard = [];
-            this.err = ["Failed to fetch leaderboard"];
-        } finally {
-            this.loading = false; // Spinner kapanır
-        }
+        // Hide loading spinner
+        this.loading = false;
     },
-    methods: { localize },
+    methods: {
+        localize,
+    },
 };
