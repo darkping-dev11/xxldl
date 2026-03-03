@@ -59,7 +59,7 @@ export default {
                 <!-- Player Details -->
                 <div class="player-container">
                     <div class="player">
-                        <!-- Search -->
+                        <!-- Player Search -->
                         <div class="player-search">
                             <input
                                 type="text"
@@ -117,20 +117,24 @@ export default {
     },
     async mounted() {
         try {
+            // fetchLeaderboard() → [leaderboard, err]
             const result = await fetchLeaderboard();
-            // fetchLeaderboard sonucu zaten [leaderboard, err] formatında
-            const leaderboardData = Array.isArray(result) ? result[0] : [];
-            const errData = Array.isArray(result) ? result[1] : [];
+            const leaderboardData = Array.isArray(result) && result.length ? result[0] : [];
+            const errData = Array.isArray(result) && result.length ? result[1] : [];
 
             // Flag & Clan ekle
             leaderboardData.forEach(player => {
-                player.flag = player.flag || "🏳️";
-                player.clan = player.clan || "NoClan";
+                switch(player.user) {
+                    case "Exen": player.flag="🇺🇸"; player.clan="DarkGuild"; break;
+                    case "Zeronium": player.flag="🇫🇷"; player.clan="LightClan"; break;
+                    case "ZmL": player.flag="🇩🇪"; player.clan="NightCrew"; break;
+                    default: player.flag="🏳️"; player.clan="NoClan";
+                }
                 player.visible = true;
             });
 
-            this.leaderboard = leaderboardData || [];
-            this.err = errData || [];
+            this.leaderboard = leaderboardData;
+            this.err = errData;
 
         } catch (e) {
             console.error("fetchLeaderboard error:", e);
