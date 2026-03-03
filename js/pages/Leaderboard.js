@@ -12,6 +12,7 @@ export default {
         loading: true,
         selected: 0,
         err: [],
+        searchQuery: '', // Player Search input
     }),
     template: `
         <main v-if="loading">
@@ -38,7 +39,9 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(ientry, i) in leaderboard" :key="i">
+                            <tr v-for="(ientry, i) in leaderboard" 
+                                :key="i" 
+                                v-if="ientry.visible !== false">
                                 <td class="rank">
                                     <p class="type-label-lg">#{{ i + 1 }}</p>
                                 </td>
@@ -64,6 +67,16 @@ export default {
                 <!-- Player details -->
                 <div class="player-container">
                     <div class="player">
+                        <!-- Player Search -->
+                        <div class="player-search">
+                            <input
+                                type="text"
+                                placeholder="Search Player..."
+                                v-model="searchQuery"
+                                @input="filterPlayers"
+                            />
+                        </div>
+
                         <h1>#{{ selected + 1 }} {{ entry.user }}</h1>
                         <h3>{{ entry.total }}</h3>
                         <h2 v-if="entry.verified.length > 0">Verified ({{ entry.verified.length }})</h2>
@@ -80,6 +93,7 @@ export default {
                                 </td>
                             </tr>
                         </table>
+
                         <h2 v-if="entry.completed.length > 0">Completed ({{ entry.completed.length }})</h2>
                         <table class="table">
                             <tr v-for="score in entry.completed" :key="score.level">
@@ -94,6 +108,7 @@ export default {
                                 </td>
                             </tr>
                         </table>
+
                         <h2 v-if="entry.progressed.length > 0">Progressed ({{ entry.progressed.length }})</h2>
                         <table class="table">
                             <tr v-for="score in entry.progressed" :key="score.level">
@@ -127,7 +142,7 @@ export default {
         // Flag ve Clan ekleme
         this.leaderboard.forEach(player => {
             switch(player.user) {
-                case "Sample_Victor_1":
+                case "Exen":
                     player.flag = "🇺🇸";
                     player.clan = "DarkGuild";
                     break;
@@ -139,11 +154,12 @@ export default {
                     player.flag = "🇩🇪";
                     player.clan = "NightCrew";
                     break;
-                // İstediğin kadar kullanıcı ekleyebilirsin
                 default:
-                    player.flag = "🏳️"; // boş / bilinmeyen
+                    player.flag = "🏳️";
                     player.clan = "NoClan";
             }
+            // Başlangıçta tüm oyuncular görünür
+            player.visible = true;
         });
 
         // Hide loading spinner
@@ -151,5 +167,15 @@ export default {
     },
     methods: {
         localize,
+        filterPlayers() {
+            if(this.searchQuery.trim() === '') {
+                this.leaderboard.forEach(player => player.visible = true);
+            } else {
+                const query = this.searchQuery.toLowerCase();
+                this.leaderboard.forEach(player => {
+                    player.visible = player.user.toLowerCase().includes(query);
+                });
+            }
+        }
     },
 };
