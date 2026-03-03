@@ -135,12 +135,14 @@ export default {
         },
     },
     async mounted() {
-        const [leaderboard, err] = await fetchLeaderboard();
-        this.leaderboard = leaderboard;
-        this.err = err;
+    try {
+        const result = await fetchLeaderboard();
+        // Güvenli kontrol: fetch null/undefined dönüyorsa boş array yap
+        const leaderboard = (result && result[0]) ? result[0] : [];
+        const err = (result && result[1]) ? result[1] : [];
 
         // Flag ve Clan ekleme
-        this.leaderboard.forEach(player => {
+        leaderboard.forEach(player => {
             switch(player.user) {
                 case "Exen":
                     player.flag = "🇺🇸";
@@ -158,24 +160,20 @@ export default {
                     player.flag = "🏳️";
                     player.clan = "NoClan";
             }
-            // Başlangıçta tüm oyuncular görünür
+            // Tüm oyuncular başta görünür
             player.visible = true;
         });
 
-        // Hide loading spinner
+        // Reaktif olarak Vue'ya ata
+        this.leaderboard = leaderboard;
+        this.err = err;
+
+    } catch (e) {
+        console.error("Error fetching leaderboard:", e);
+        this.leaderboard = [];
+        this.err = ["Failed to fetch leaderboard"];
+    } finally {
+        // Spinner'ı gizle
         this.loading = false;
-    },
-    methods: {
-        localize,
-        filterPlayers() {
-            if(this.searchQuery.trim() === '') {
-                this.leaderboard.forEach(player => player.visible = true);
-            } else {
-                const query = this.searchQuery.toLowerCase();
-                this.leaderboard.forEach(player => {
-                    player.visible = player.user.toLowerCase().includes(query);
-                });
-            }
-        }
-    },
-};
+    }
+}
