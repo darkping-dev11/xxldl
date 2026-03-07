@@ -55,16 +55,26 @@ header .logo {
 }
 
 header .nav {
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-bottom: 2px solid #fff; /* Daha belirgin */
+}
+
+.nav__tab span {
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    padding-bottom: 2px;
+}
+
+.nav__tab span.router-link-active {
+    border-bottom: 2px solid #fff;
 }
 
 .nav__cta {
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px solid #fff; /* Daha belirgin */
     transition: border-color 0.3s ease;
 }
 
 .nav__cta:hover {
-    border-bottom: 2px solid #fff;
+    border-bottom: 3px solid #fff;
 }
 
 /* Dropdown menü */
