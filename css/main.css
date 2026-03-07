@@ -82,20 +82,19 @@ main > div {
     overflow-y: auto;
 }
 
-/* Spinner container (layout bozulmaması için aynı bırakıldı) */
-.spinner {
+/* ---------------- SPINNER ---------------- */
+.spinner-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    grid-column: span 3;
+    align-items: center;
+    height: 60vh; /* Sayfanın ortasında */
 }
 
-/* Dönen loader */
 .spinner-circle {
     width: 50px;
     height: 50px;
     border: 5px solid rgba(255,255,255,0.25);
-    border-top: 5px solid white;
+    border-top: 5px solid #ff66cc; /* Dönen pembe renk */
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -103,6 +102,70 @@ main > div {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ---------------- LEVEL SEARCH ---------------- */
+.level-search {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    color: #ff66cc; /* Yazı rengi pembe */
+    background-color: rgba(255, 255, 255, 0.1); /* Hafif arka plan */
+    font-size: 1rem;
+}
+
+.level-search:focus {
+    outline: none;
+    box-shadow: 0 0 5px #ff66cc;
+}
+
+/* ---------------- LEVEL LIST ---------------- */
+.level-name {
+    background: none !important; /* Level arka planını kaldır */
+    color: #fff !important; /* Normal yazı beyaz */
+}
+
+/* ---------------- LEADERBOARD ---------------- */
+.page-leaderboard .board {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.page-leaderboard .board th,
+.page-leaderboard .board td {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Başlık altına çizgi */
+.page-leaderboard .board th {
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+/* Hücreler arasına dikey çizgi */
+.page-leaderboard .board th + th,
+.page-leaderboard .board td + td {
+    border-left: 1px solid rgba(255,255,255,0.3);
+}
+
+/* ---------------- NAV ALT ÇİZGİLER ---------------- */
+header .logo {
+    border-bottom: 2px solid rgba(255,255,255,0.5); /* Daha belirgin */
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+header .nav {
+    border-bottom: 2px solid rgba(255,255,255,0.4); /* Daha belirgin */
+}
+
+.nav__cta {
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.nav__cta:hover {
+    border-bottom: 2px solid #fff;
 }
 
 input[type="checkbox"] {
