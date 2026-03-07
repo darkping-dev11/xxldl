@@ -187,3 +187,37 @@ header .nav__tab:hover, .nav__cta:hover {
     color: #fff;      /* level yazısı beyaz */
     cursor: pointer;
 }
+
+/* LIST ESKİ GÖRÜNÜM */
+.list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.list tr {
+    display: table-row; /* esnek değil, table gibi davranır */
+}
+
+.list td {
+    display: table-cell; /* yan yana */
+    padding: 0.5rem 1rem;
+    vertical-align: middle;
+}
+
+.list .rank {
+    width: 80px;        /* rank sabit genişlik */
+}
+
+.list .level button {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    color: #ff66cc; /* level search pembe uyumlu */
+    cursor: pointer;
+}
+
+/* Level Search input yazı rengi pembe */
+input[v-model] {
+    color: #ff66cc;
+}
