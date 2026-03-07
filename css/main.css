@@ -23,78 +23,68 @@ header.dark {
     --color-on-error: white;
 }
 
-html,
-body {
+html, body {
     height: 100%;
+    margin: 0;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    margin: 0;
-}
-
-header,
-main {
-    background-color: var(--color-background);
-    color: var(--color-on-background);
-    display: grid;
-    grid-template-columns: minmax(16rem, 1fr) minmax(16rem, 2fr) minmax(16em, 1fr);
-    column-gap: 2rem;
+    font-family: 'Lexend Deca', sans-serif;
 }
 
 header {
     display: flex;
-    padding-inline: calc(25vw - 10rem);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
     height: 4rem;
     background-color: var(--color-primary);
     color: var(--color-on-primary);
 }
 
-@media screen and (min-width: 1366px) {
-    header {
-        display: grid;
-        padding-inline: 0;
-    }
-}
-
-header .logo {
-    justify-self: end;
-    align-self: center;
-    display: flex;
-    align-items: flex-end;
-    gap: 1rem;
-}
-
-header .nav {
-    flex: 1;
+header .logo h2 {
+    margin: 0;
+    font-weight: 700;
 }
 
 main {
-    height: 0;
     flex: 1;
     display: grid;
-    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: 1fr 2fr;
     column-gap: 2rem;
+    overflow: hidden;
+    background-color: var(--color-background);
+    color: var(--color-on-background);
 }
 
 main > div {
     overflow-y: auto;
 }
 
-/* ---------------- SPINNER ---------------- */
+/* Level search input pembe */
+.level-search input {
+    padding: 8px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    color: #ff66cc;
+}
+
+/* Spinner */
 .spinner-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh; /* Sayfanın ortasında */
+    height: 60vh;
 }
 
 .spinner-circle {
     width: 50px;
     height: 50px;
     border: 5px solid rgba(255,255,255,0.25);
-    border-top: 5px solid #ff66cc; /* Dönen pembe renk */
+    border-top: 5px solid white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -104,73 +94,36 @@ main > div {
     100% { transform: rotate(360deg); }
 }
 
-/* ---------------- LEVEL SEARCH ---------------- */
-.level-search {
+/* List ve level görünümü */
+.list-container {
+    padding: 1rem;
+    background-color: transparent;
+}
+
+.list {
     width: 100%;
-    padding: 8px;
-    border-radius: 8px;
-    border: none;
-    color: #ff66cc; /* Yazı rengi pembe */
-    background-color: rgba(255, 255, 255, 0.1); /* Hafif arka plan */
-    font-size: 1rem;
-}
-
-.level-search:focus {
-    outline: none;
-    box-shadow: 0 0 5px #ff66cc;
-}
-
-/* ---------------- LEVEL LIST ---------------- */
-.level-name {
-    background: none !important; /* Level arka planını kaldır */
-    color: #fff !important; /* Normal yazı beyaz */
-}
-
-/* ---------------- LEADERBOARD ---------------- */
-.page-leaderboard .board {
     border-collapse: collapse;
+}
+
+.list td.rank,
+.list td.level {
+    padding: 0.5rem;
+}
+
+.list td.level button {
     width: 100%;
-}
-
-.page-leaderboard .board th,
-.page-leaderboard .board td {
-    padding: 0.5rem 0.75rem;
-}
-
-/* Başlık altına çizgi */
-.page-leaderboard .board th {
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-}
-
-/* Hücreler arasına dikey çizgi */
-.page-leaderboard .board th + th,
-.page-leaderboard .board td + td {
-    border-left: 1px solid rgba(255,255,255,0.3);
-}
-
-/* ---------------- NAV ALT ÇİZGİLER ---------------- */
-header .logo {
-    border-bottom: 2px solid rgba(255,255,255,0.5); /* Daha belirgin */
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-
-header .nav {
-    border-bottom: 2px solid rgba(255,255,255,0.4); /* Daha belirgin */
-}
-
-.nav__cta {
-    border-bottom: 2px solid transparent;
-    transition: border-color 0.3s ease;
-}
-
-.nav__cta:hover {
-    border-bottom: 2px solid #fff;
-}
-
-input[type="checkbox"] {
-    height: 1.25rem;
-    width: 1.25rem;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #fff;
     cursor: pointer;
-    margin: 0;
+}
+
+.level-container {
+    padding: 1rem;
+}
+
+.level h1 {
+    margin-top: 0;
+    color: #fff;
 }
