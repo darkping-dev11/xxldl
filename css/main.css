@@ -159,3 +159,31 @@ header .nav__tab:hover, .nav__cta:hover {
     0%{ transform:rotate(0deg); }
     100%{ transform:rotate(360deg); }
 }
+/* List table satırlarını yan yana yapmak için */
+.list tr {
+    display: flex;          /* satırlar yan yana */
+    align-items: center;    /* dikey ortala */
+    margin-bottom: 0.25rem; /* satırlar arası boşluk */
+}
+
+.list td {
+    padding: 0.5rem 1rem;
+}
+
+.list .rank {
+    width: 80px;      /* rank sütunu sabit genişlik */
+    flex-shrink: 0;
+}
+
+.list .level {
+    flex: 1;          /* level sütunu kalan alanı kaplar */
+}
+
+.list .level button {
+    width: 100%;      /* buton tüm hücreyi kaplasın */
+    background: none;
+    border: none;
+    text-align: left;
+    color: #fff;      /* level yazısı beyaz */
+    cursor: pointer;
+}
