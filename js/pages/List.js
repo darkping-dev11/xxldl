@@ -22,7 +22,6 @@ export default {
         </main>
 
         <main v-else class="page-list">
-
             <div class="list-container">
 
                 <!-- LEVEL SEARCH -->
@@ -33,8 +32,8 @@ export default {
                         style="padding:8px;width:100%;border-radius:8px;border:none;">
                 </div>
 
-                <table class="list" v-if="list">
-                    <tr v-for="([level, err], i) in filteredList">
+                <table class="list" v-if="filteredList.length">
+                    <tr v-for="([level, err], i) in filteredList" :key="i">
                         <td class="rank">
                             <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
@@ -42,9 +41,7 @@ export default {
 
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
                             <button @click="selected = i">
-                                <span class="type-label-lg">
-                                    {{ level?.name || \`Error (\${err}.json)\` }}
-                                </span>
+                                <span class="type-label-lg">{{ level?.name || \`Error (\${err}.json)\` }}</span>
                             </button>
                         </td>
                     </tr>
@@ -68,12 +65,10 @@ export default {
                             <div class="type-title-sm">Points when completed</div>
                             <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
                         </li>
-
                         <li>
                             <div class="type-title-sm">ID</div>
                             <p>{{ level.id }}</p>
                         </li>
-
                         <li>
                             <div class="type-title-sm">Password</div>
                             <p>{{ level.password || 'Free to Copy' }}</p>
@@ -81,43 +76,35 @@ export default {
                     </ul>
 
                     <h2>Records</h2>
-
                     <p v-if="selected + 1 <= 75">
                         <strong>{{ level.percentToQualify }}%</strong> or better to qualify
                     </p>
-
                     <p v-else-if="selected +1 <= 150">
                         <strong>100%</strong> or better to qualify
                     </p>
-
                     <p v-else>
                         This level does not accept new records.
                     </p>
 
                     <table class="records">
                         <tr v-for="record in level.records" class="record">
-
                             <td class="percent">
                                 <p>{{ record.percent }}%</p>
                             </td>
-
                             <td class="user">
                                 <a :href="record.link" target="_blank" class="type-label-lg">
                                     {{ record.user }}
                                 </a>
                             </td>
-
                             <td class="mobile">
                                 <img 
                                     v-if="record.mobile"
                                     :src="\`/assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`"
                                     alt="Mobile">
                             </td>
-
                             <td class="hz">
                                 <p>{{ record.hz }}Hz</p>
                             </td>
-
                         </tr>
                     </table>
                 </div>
@@ -155,19 +142,14 @@ export default {
                                 class="type-label-lg link"
                                 target="_blank"
                                 :href="editor.link">
-
-                                {{ editor.name }}
-
+                                    {{ editor.name }}
                                 </a>
-
                                 <p v-else>{{ editor.name }}</p>
-
                             </li>
                         </ol>
                     </template>
 
                     <h3>Submission Requirements</h3>
-
                     <p>Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)</p>
                     <p>Achieved the record on the level that is listed on the site - please check the level ID before you submit a record</p>
                     <p>Have either source audio or clicks/taps in the video. Edited audio only does not count</p>
@@ -191,59 +173,42 @@ export default {
         roleIconMap,
         store,
 
-        /* SEARCH */
         search: ""
     }),
 
     computed: {
 
-        level() {
-            return this.list[this.selected][0];
-        },
-
-        video() {
-            if (!this.level.showcase) {
-                return embed(this.level.verification);
-            }
-
-            return embed(
-                this.toggledShowcase
-                    ? this.level.showcase
-                    : this.level.verification
-            );
-        },
-
-        /* FILTER LEVELS */
         filteredList() {
             if (!this.search) return this.list;
-
             return this.list.filter(([level]) =>
                 level?.name?.toLowerCase().includes(this.search.toLowerCase())
             );
         },
+
+        level() {
+            if (!this.filteredList[this.selected]) return null;
+            return this.filteredList[this.selected][0];
+        },
+
+        video() {
+            if (!this.level?.showcase) return embed(this.level?.verification);
+            return embed(this.toggledShowcase ? this.level.showcase : this.level.verification);
+        }
     },
 
     async mounted() {
-
         this.list = await fetchList();
         this.editors = await fetchEditors();
 
         if (!this.list) {
-            this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
-            ];
+            this.errors = ["Failed to load list. Retry in a few minutes or notify list staff."];
         } else {
             this.errors.push(
                 ...this.list
                     .filter(([_, err]) => err)
-                    .map(([_, err]) => {
-                        return \`Failed to load level. (\${err}.json)\`;
-                    })
+                    .map(([_, err]) => `Failed to load level. (${err}.json)`)
             );
-
-            if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
-            }
+            if (!this.editors) this.errors.push("Failed to load list editors.");
         }
 
         this.loading = false;
@@ -251,6 +216,6 @@ export default {
 
     methods: {
         embed,
-        score,
-    },
+        score
+    }
 };
