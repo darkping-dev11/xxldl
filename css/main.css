@@ -9,6 +9,7 @@
     --color-on-error: white;
 }
 
+/* Dark mode */
 main.dark,
 header.dark {
     color-scheme: dark;
@@ -26,12 +27,14 @@ header.dark {
 html, body {
     height: 100%;
     margin: 0;
+    font-family: 'Lexend Deca', sans-serif;
+    color: var(--color-on-background);
+    background-color: var(--color-background);
 }
 
 body {
     display: flex;
     flex-direction: column;
-    font-family: 'Lexend Deca', sans-serif;
 }
 
 header {
@@ -52,24 +55,13 @@ header .logo h2 {
 main {
     flex: 1;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    column-gap: 2rem;
+    grid-template-columns: minmax(16rem, 1fr) 2fr;
+    gap: 2rem;
     overflow: hidden;
-    background-color: var(--color-background);
-    color: var(--color-on-background);
 }
 
 main > div {
     overflow-y: auto;
-}
-
-/* Level search input pembe */
-.level-search input {
-    padding: 8px;
-    width: 100%;
-    border-radius: 8px;
-    border: none;
-    color: #ff66cc;
 }
 
 /* Spinner */
@@ -83,7 +75,7 @@ main > div {
 .spinner-circle {
     width: 50px;
     height: 50px;
-    border: 5px solid rgba(255,255,255,0.25);
+    border: 5px solid rgba(255,255,255,0.2);
     border-top: 5px solid white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -94,10 +86,20 @@ main > div {
     100% { transform: rotate(360deg); }
 }
 
-/* List ve level görünümü */
+/* Level search */
+.level-search input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    color: #ff66cc; /* pembe */
+    background: rgba(0,0,0,0.1);
+}
+
+/* List */
 .list-container {
-    padding: 1rem;
     background-color: transparent;
+    padding: 1rem;
 }
 
 .list {
@@ -119,6 +121,7 @@ main > div {
     cursor: pointer;
 }
 
+/* Level container */
 .level-container {
     padding: 1rem;
 }
@@ -126,4 +129,56 @@ main > div {
 .level h1 {
     margin-top: 0;
     color: #fff;
+}
+
+/* Leaderboard çizgiler */
+.page-leaderboard .board {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.page-leaderboard .board th,
+.page-leaderboard .board td {
+    padding: 0.5rem 0.75rem;
+}
+
+.page-leaderboard .board th {
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+}
+
+.page-leaderboard .board th + th,
+.page-leaderboard .board td + td {
+    border-left: 1px solid rgba(255,255,255,0.3);
+}
+
+/* Dropdown */
+.nav-dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff; /* beyaz arka plan */
+    min-width: 140px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 100;
+}
+
+.nav-dropdown .dropdown-content a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: #000;
+    text-decoration: none;
+}
+
+.nav-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* XXL DL font */
+header .logo h2 {
+    font-family: 'Lexend Deca', sans-serif;
+    font-weight: 700;
 }
