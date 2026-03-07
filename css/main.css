@@ -3,6 +3,7 @@
     --color-on-background: #fff;
 }
 
+/* BODY & BACKGROUND */
 body {
     margin: 0;
     font-family: 'Lexend Deca', sans-serif;
@@ -19,7 +20,7 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-/* Header */
+/* HEADER */
 header {
     display: flex;
     justify-content: space-between;
@@ -49,7 +50,7 @@ header .nav__tab:hover, .nav__cta:hover {
     border-bottom: 2px solid #fff;
 }
 
-/* Dropdown */
+/* DROPDOWN */
 .nav-dropdown {
     position: relative;
 }
@@ -88,12 +89,12 @@ header .nav__tab:hover, .nav__cta:hover {
     display: block;
 }
 
-/* List container */
+/* LIST CONTAINER */
 .list-container {
     margin: 1rem;
 }
 
-/* Level search */
+/* LEVEL SEARCH */
 .level-search input {
     width: 100%;
     padding: 8px;
@@ -104,29 +105,28 @@ header .nav__tab:hover, .nav__cta:hover {
     background: rgba(255,255,255,0.1);
 }
 
-/* List table */
+/* LIST TABLE */
 .list {
     width: 100%;
     border-collapse: collapse;
 }
 
 .list tr {
-    display: flex; /* yan yana */
-    align-items: center;
-    margin-bottom: 0.25rem;
+    display: table-row; /* eski table görünümü */
 }
 
 .list td {
+    display: table-cell;
     padding: 0.5rem 1rem;
+    vertical-align: middle;
 }
 
 .list .rank {
-    width: 80px;
-    flex-shrink: 0;
+    width: 80px; /* sabit genişlik */
 }
 
 .list .level {
-    flex: 1;
+    width: auto;
 }
 
 .list .level button {
@@ -134,19 +134,19 @@ header .nav__tab:hover, .nav__cta:hover {
     background: none;
     border: none;
     text-align: left;
-    color: #fff;
+    color: #ff66cc; /* level search pembe */
     cursor: pointer;
 }
 
-/* Spinner */
-.spinner-container{
+/* SPINNER */
+.spinner-container {
     display:flex;
     justify-content:center;
     align-items:center;
     height:60vh;
 }
 
-.spinner-circle{
+.spinner-circle {
     width:50px;
     height:50px;
     border:5px solid rgba(255,255,255,0.25);
@@ -159,65 +159,8 @@ header .nav__tab:hover, .nav__cta:hover {
     0%{ transform:rotate(0deg); }
     100%{ transform:rotate(360deg); }
 }
-/* List table satırlarını yan yana yapmak için */
-.list tr {
-    display: flex;          /* satırlar yan yana */
-    align-items: center;    /* dikey ortala */
-    margin-bottom: 0.25rem; /* satırlar arası boşluk */
-}
 
-.list td {
-    padding: 0.5rem 1rem;
-}
-
-.list .rank {
-    width: 80px;      /* rank sütunu sabit genişlik */
-    flex-shrink: 0;
-}
-
-.list .level {
-    flex: 1;          /* level sütunu kalan alanı kaplar */
-}
-
-.list .level button {
-    width: 100%;      /* buton tüm hücreyi kaplasın */
-    background: none;
-    border: none;
-    text-align: left;
-    color: #fff;      /* level yazısı beyaz */
-    cursor: pointer;
-}
-
-/* LIST ESKİ GÖRÜNÜM */
-.list {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.list tr {
-    display: table-row; /* esnek değil, table gibi davranır */
-}
-
-.list td {
-    display: table-cell; /* yan yana */
-    padding: 0.5rem 1rem;
-    vertical-align: middle;
-}
-
-.list .rank {
-    width: 80px;        /* rank sabit genişlik */
-}
-
-.list .level button {
-    width: 100%;
-    background: none;
-    border: none;
-    text-align: left;
-    color: #ff66cc; /* level search pembe uyumlu */
-    cursor: pointer;
-}
-
-/* Level Search input yazı rengi pembe */
+/* Level Search yazısı (v-model) pembe */
 input[v-model] {
     color: #ff66cc;
 }
