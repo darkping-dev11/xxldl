@@ -112,7 +112,7 @@ header .nav__tab:hover, .nav__cta:hover {
 }
 
 .list tr {
-    display: table-row; /* eski table görünümü */
+    display: table-row; /* eski tablo görünümü */
 }
 
 .list td {
