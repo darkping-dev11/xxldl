@@ -1,12 +1,12 @@
 export default {
   template: `
-    <div class="auth-page login-page">
+    <div class="auth-page">
       <div class="auth-container">
         <h1>Login</h1>
         <p>Access your account to submit records.</p>
         <form @submit.prevent="submit">
-          <input type="email" placeholder="Email" v-model="email" required />
-          <input type="password" placeholder="Password" v-model="password" required />
+          <input type="email" v-model="email" placeholder="Email" required />
+          <input type="password" v-model="password" placeholder="Password" required />
           <button type="submit">Login</button>
         </form>
         <p class="auth-footer">
@@ -16,11 +16,11 @@ export default {
     </div>
   `,
   data() {
-    return { email: '', password: '' }
+    return { email: '', password: '' };
   },
   methods: {
     submit() {
-      alert('Login successful! (Backend eklenecek)');
+      alert('Login successful! (backend eklenecek)');
       this.$router.push('/profile');
     }
   }
