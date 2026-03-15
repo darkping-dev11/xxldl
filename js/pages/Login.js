@@ -15,9 +15,7 @@ export default {
       </div>
     </div>
   `,
-  data() {
-    return { email: '', password: '' };
-  },
+  data() { return { email: '', password: '' }; },
   methods: {
     submit() {
       alert('Login successful! (backend eklenecek)');
