@@ -9,9 +9,7 @@ export const store = Vue.reactive({
   user: null,
 });
 
-const app = Vue.createApp({
-  data: () => ({ store }),
-});
+const app = Vue.createApp({ data: () => ({ store }) });
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
