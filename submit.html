@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Kayıt Gönder</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f3f3f3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    width:350px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+}
+
+input,select,textarea{
+    width:100%;
+    margin-top:8px;
+    margin-bottom:15px;
+    padding:8px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#5c8df6;
+    border:none;
+    color:white;
+    border-radius:5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>Kayıt Gönder</h2>
+
+<input type="text" placeholder="Kullanıcı adı">
+
+<select>
+<option>Bir seviye seçin...</option>
+</select>
+
+<input type="text" placeholder="Kayıt bağlantısı">
+
+<input type="text" placeholder="Ham görüntü bağlantısı">
+
+<textarea placeholder="Notlar"></textarea>
+
+<label>Platform</label><br>
+
+<input type="radio" name="p"> Mobil
+<input type="radio" name="p"> Bilgisayar
+
+<br><br>
+
+<button>Göndermek</button>
+
+</div>
+
+</body>
+</html>
