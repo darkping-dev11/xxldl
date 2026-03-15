@@ -16,15 +16,11 @@ export default {
     </div>
   `,
   data() {
-    return {
-      email: '',
-      password: ''
-    }
+    return { email: '', password: '' }
   },
   methods: {
     submit() {
-      console.log('Login submitted:', this.email);
-      alert('Login successful! (Backend ekle)');
+      alert('Login successful! (Backend eklenecek)');
       this.$router.push('/profile');
     }
   }
