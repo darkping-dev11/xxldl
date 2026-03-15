@@ -1,27 +1,33 @@
 export default {
   template: `
-    <div class="auth-page">
-      <h2>Register</h2>
-      <form @submit.prevent="submit">
-        <input type="text" placeholder="Username" v-model="username" required />
-        <input type="email" placeholder="Email" v-model="email" required />
-        <input type="password" placeholder="Password" v-model="password" required />
-        <button type="submit">Register</button>
-      </form>
+    <div class="auth-page register-page">
+      <div class="auth-container">
+        <h1>Register</h1>
+        <p>Create your account to submit records.</p>
+        <form @submit.prevent="submit">
+          <input type="text" placeholder="Username" v-model="username" required />
+          <input type="email" placeholder="Email" v-model="email" required />
+          <input type="password" placeholder="Password" v-model="password" required />
+          <button type="submit">Register</button>
+        </form>
+        <p class="auth-footer">
+          Already have an account? <router-link to="/login">Login</router-link>
+        </p>
+      </div>
     </div>
   `,
   data() {
     return {
       username: '',
       email: '',
-      password: '',
+      password: ''
     }
   },
   methods: {
     submit() {
-      console.log('Register', this.username, this.email);
+      console.log('Register submitted:', this.username, this.email);
       alert('Register submitted! (Backend ekle)');
-      this.$router.push('/login'); // register sonrası login sayfasına yönlendir
+      this.$router.push('/login');
     }
   }
 };
