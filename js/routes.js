@@ -13,5 +13,5 @@ export default [
   { path: '/submit', component: Submit },
   { path: '/register', component: Register },
   { path: '/login', component: Login },
-  { path: '/profile', component: Profile },
+  { path: '/profile', component: Profile }
 ];
