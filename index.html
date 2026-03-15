@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/css/components/nav.css"/>
     <link rel="stylesheet" href="/css/components/btn.css"/>
     <link rel="stylesheet" href="/css/components/tabs.css"/>
-    <link rel="stylesheet" href="/css/pages/auth.css"/> <!-- Register/Login için -->
+    <link rel="stylesheet" href="/css/pages/auth.css"/> <!-- Register/Login -->
 
     <!-- Vue -->
     <script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
@@ -46,14 +46,14 @@
                 <!-- Submit Record -->
                 <router-link class="nav__cta type-label-lg" to="/submit">Submit Record</router-link>
 
-                <!-- Register & Login Butonları -->
+                <!-- Register & Login -->
                 <router-link class="nav__cta type-label-lg" to="/register">Register</router-link>
                 <router-link class="nav__cta type-label-lg" to="/login">Login</router-link>
             </div>
         </nav>
     </header>
 
-    <!-- Vue Router ile sayfalar buraya yüklenir -->
+    <!-- Sayfalar buraya yüklenir -->
     <router-view :class="{ dark: store.dark }"></router-view>
 </body>
 </html>
