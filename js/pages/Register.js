@@ -25,8 +25,7 @@ export default {
   },
   methods: {
     submit() {
-      console.log('Register submitted:', this.username, this.email);
-      alert('Register submitted! (Backend ekle)');
+      alert('Register submitted! (Backend eklenecek)');
       this.$router.push('/login');
     }
   }
