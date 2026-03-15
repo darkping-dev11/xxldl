@@ -1,36 +1,56 @@
 export default {
 template: `
-<div class="submit-page">
+<div style="display:flex;justify-content:center;padding:60px">
 
-<h1>Kayıt Gönder</h1>
+<div style="
+background:white;
+padding:35px;
+width:420px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+">
 
-<div class="submit-card">
+<h2 style="text-align:center;margin-bottom:25px">Kayıt Gönder</h2>
 
 <label>Kullanıcı adı</label>
-<input type="text" placeholder="Kullanıcı adınız">
+<input style="width:100%;margin:6px 0 15px;padding:8px"
+placeholder="Kullanıcı adınız">
 
 <label>Seviye</label>
-<select>
+<select style="width:100%;margin:6px 0 15px;padding:8px">
 <option>Bir seviye seçin...</option>
 </select>
 
-<label>Kayıt bağlantısı</label>
-<input type="text" placeholder="https://...">
+<label>Kayıt Bağlantısı</label>
+<input style="width:100%;margin:6px 0 15px;padding:8px"
+placeholder="https://...">
 
-<label>Ham görüntü bağlantısı</label>
-<input type="text" placeholder="https://...">
+<label>Ham Görüntü Bağlantısı</label>
+<input style="width:100%;margin:6px 0 15px;padding:8px"
+placeholder="https://...">
 
 <label>Notlar</label>
-<input type="text" placeholder="Başka notlarınız var mı...?">
+<input style="width:100%;margin:6px 0 15px;padding:8px"
+placeholder="Başka notlarınız var mı...?">
 
 <label>Platform</label>
 
-<div class="platform">
+<div style="margin:10px 0 20px">
 <label><input type="radio" name="p"> Mobil</label>
-<label><input type="radio" name="p"> Bilgisayar</label>
+<label style="margin-left:20px"><input type="radio" name="p"> Bilgisayar</label>
 </div>
 
-<button class="submit-btn">Göndermek</button>
+<button style="
+width:100%;
+padding:10px;
+background:#7fa8e8;
+border:none;
+border-radius:6px;
+color:white;
+font-weight:600;
+">
+Göndermek
+</button>
 
 </div>
 
