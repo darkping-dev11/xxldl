@@ -6,14 +6,14 @@ export const store = Vue.reactive({
     this.dark = !this.dark;
     localStorage.setItem('dark', JSON.stringify(this.dark));
   },
-  user: null,
+  user: null
 });
 
 const app = Vue.createApp({ data: () => ({ store }) });
 
 const router = VueRouter.createRouter({
   history: VueRouter.createWebHashHistory(),
-  routes,
+  routes
 });
 
 app.use(router);
